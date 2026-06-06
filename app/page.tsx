@@ -70,21 +70,7 @@ export default function Home() {
                   color: 'var(--ink)',
                 }}
               >
-                I&apos;m a software engineer turned product manager. I love building AI-native
-                products and agents.
-              </p>
-
-              <p
-                style={{
-                  fontFamily: 'var(--font-newsreader), Georgia, serif',
-                  fontWeight: 400,
-                  fontSize: 'clamp(18px, 1.8vw, 22px)',
-                  lineHeight: 1.55,
-                  color: 'var(--ink-soft)',
-                  margin: '0 0 40px',
-                }}
-              >
-                Currently at{' '}
+                I&apos;m a product manager building AI-native products. Currently at{' '}
                 <a
                   href="https://tennr.com"
                   target="_blank"
@@ -98,7 +84,24 @@ export default function Home() {
                 >
                   Tennr
                 </a>
-                .{' '}Studied at Duke and Wharton.
+                .
+              </p>
+
+              <p
+                style={{
+                  fontFamily: 'var(--font-newsreader), Georgia, serif',
+                  fontWeight: 400,
+                  fontSize: 'clamp(18px, 1.8vw, 22px)',
+                  lineHeight: 1.55,
+                  color: 'var(--ink-soft)',
+                  margin: '0 0 40px',
+                }}
+              >
+                Before that, I spent 5+ years as a software engineer building new products at{' '}
+                <a href="https://www.gemini.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--rule)' }}>Gemini</a>
+                {' '}and{' '}
+                <a href="https://www.disneyplus.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--rule)' }}>Disney+</a>.
+                <br />Studied at Duke and Wharton.
               </p>
 
               <div
@@ -165,29 +168,6 @@ export default function Home() {
             flexWrap: 'wrap',
           }}
         >
-          <div>
-            <p
-              style={{
-                fontFamily: 'var(--font-newsreader), Georgia, serif',
-                fontSize: 22,
-                fontWeight: 500,
-                margin: '0 0 8px',
-                color: 'var(--ink)',
-              }}
-            >
-              Claire North
-            </p>
-            <p
-              style={{
-                fontSize: 15,
-                color: 'var(--ink-soft)',
-                margin: 0,
-                maxWidth: '40ch',
-              }}
-            >
-              Software engineer turned product manager. Building AI-native products and agents.
-            </p>
-          </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
               {[

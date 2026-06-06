@@ -28,19 +28,6 @@ export default function SkillsSection({ skills }: { skills: SkillMeta[] }) {
     >
       <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 48px' }}>
         <div style={{ marginBottom: 48 }}>
-          <p
-            style={{
-              fontFamily: 'var(--font-inter), system-ui, sans-serif',
-              fontSize: 12.5,
-              fontWeight: 600,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: 'var(--accent)',
-              margin: '0 0 14px',
-            }}
-          >
-            Skills
-          </p>
           <h2
             style={{
               fontFamily: 'var(--font-newsreader), Georgia, serif',
@@ -52,7 +39,7 @@ export default function SkillsSection({ skills }: { skills: SkillMeta[] }) {
               color: 'var(--ink)',
             }}
           >
-            Claude Code skills, running in production.
+            Claude skills
           </h2>
         </div>
 

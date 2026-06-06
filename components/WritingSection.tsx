@@ -17,19 +17,6 @@ export default function WritingSection({ entries }: { entries: WritingEntry[] })
     >
       <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 48px' }}>
         <div style={{ marginBottom: 48 }}>
-          <p
-            style={{
-              fontFamily: 'var(--font-inter), system-ui, sans-serif',
-              fontSize: 12.5,
-              fontWeight: 600,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: 'var(--accent)',
-              margin: '0 0 14px',
-            }}
-          >
-            Writing
-          </p>
           <h2
             style={{
               fontFamily: 'var(--font-newsreader), Georgia, serif',
@@ -41,7 +28,7 @@ export default function WritingSection({ entries }: { entries: WritingEntry[] })
               color: 'var(--ink)',
             }}
           >
-            On AI, product, and how I work.
+            Writing
           </h2>
         </div>
 

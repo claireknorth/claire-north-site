@@ -1,14 +1,1 @@
-[
-  {
-    "title": "Inbox Agent",
-    "oneLineOutcome": "Runs my email end to end — triage, drafts, and follow-ups — with a human approval step. About 75 minutes back, every single day.",
-    "url": "#",
-    "stack": ["Claude", "Gmail API", "Python", "cron"]
-  },
-  {
-    "title": "Spec → Tickets",
-    "oneLineOutcome": "Turns an approved PRD into a linked, estimated set of Linear tickets in a single pass — so the gap between \"we agreed\" and \"it's in the backlog\" is minutes, not days.",
-    "url": "#",
-    "stack": ["Claude", "Linear API", "TypeScript"]
-  }
-]
+[]
