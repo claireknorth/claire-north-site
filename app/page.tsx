@@ -84,7 +84,7 @@ export default function Home() {
                 >
                   Tennr
                 </a>
-                .
+                , an AI patient orchestration platform for healthcare providers.
               </p>
 
               <p
