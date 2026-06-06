@@ -70,7 +70,7 @@ export default function Home() {
                   color: 'var(--ink)',
                 }}
               >
-                I&apos;m a product manager building AI products — with the engineering depth to work closely with researchers and the product sense to make it matter. Currently at{' '}
+                I&apos;m a product manager building AI-native products. I love building agents, designing workflows, and getting hands-on with whatever the latest models make possible. Currently at{' '}
                 <a
                   href="https://tennr.com"
                   target="_blank"
