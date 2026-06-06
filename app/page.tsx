@@ -84,7 +84,7 @@ export default function Home() {
                 >
                   Tennr
                 </a>
-                .
+                , an AI patient orchestration platform for healthcare providers.
               </p>
 
               <p
@@ -97,11 +97,11 @@ export default function Home() {
                   margin: '0 0 40px',
                 }}
               >
-                Before that, I spent 5+ years as a software engineer building new products at{' '}
+                Five years as a software engineer at{' '}
                 <a href="https://www.gemini.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--rule)' }}>Gemini</a>
                 {' '}and{' '}
-                <a href="https://www.disneyplus.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--rule)' }}>Disney+</a>.
-                <br />Studied at Duke and Wharton.
+                <a href="https://www.disneyplus.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--rule)' }}>Disney+</a>
+                {' '}before moving into product. Duke and Wharton.
               </p>
 
               <div

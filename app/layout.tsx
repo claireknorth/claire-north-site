@@ -26,10 +26,10 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: 'Claire North',
-  description: 'Software engineer turned product manager. Building AI-native products and agents.',
+  description: 'Product manager with a software engineering foundation, building AI products at the frontier of what\'s possible.',
   openGraph: {
     title: 'Claire North',
-    description: 'Software engineer turned product manager. Building AI-native products and agents.',
+    description: 'Product manager with a software engineering foundation, building AI products at the frontier of what\'s possible.',
     type: 'website',
   },
 }
