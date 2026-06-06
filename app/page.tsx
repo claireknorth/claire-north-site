@@ -97,7 +97,7 @@ export default function Home() {
                   margin: '0 0 40px',
                 }}
               >
-                Previously a software engineer at{' '}
+                Previously spent 5 years as a software engineer at{' '}
                 <a href="https://www.gemini.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--rule)' }}>Gemini</a>
                 {' '}and{' '}
                 <a href="https://www.disneyplus.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--rule)' }}>Disney+</a>
