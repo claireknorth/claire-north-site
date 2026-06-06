@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #f7f5ef;
+  --paper-raised: #fbfaf5;
+  --ink: #1b1a17;
+  --ink-soft: #5c574d;
+  --ink-faint: #8a8479;
+  --accent: #2f7a5b;
+  --accent-deep: color-mix(in srgb, #2f7a5b 80%, #000);
+  --accent-wash: color-mix(in srgb, #2f7a5b 12%, #f7f5ef);
+  --accent-line: color-mix(in srgb, #2f7a5b 30%, #f7f5ef);
+  --rule: #e3dfd5;
+  --rule-soft: #ece8de;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+::selection {
+  background: var(--accent-wash);
+}
+
+/* Prose styles for SKILL.md detail pages */
+.skill-prose {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ink);
+  max-width: 68ch;
+}
+
+.skill-prose h1,
+.skill-prose h2,
+.skill-prose h3 {
+  font-family: 'Newsreader', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+
+.skill-prose h1 { font-size: 2rem; line-height: 1.1; }
+.skill-prose h2 { font-size: 1.5rem; line-height: 1.2; }
+.skill-prose h3 { font-size: 1.2rem; }
+
+.skill-prose p { margin: 0 0 1.2em; color: var(--ink-soft); }
+
+.skill-prose ul,
+.skill-prose ol {
+  margin: 0 0 1.2em;
+  padding-left: 1.5em;
+  color: var(--ink-soft);
+}
+
+.skill-prose li { margin-bottom: 0.35em; }
+
+.skill-prose code {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.875em;
+  background: var(--rule-soft);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  color: var(--ink);
+}
+
+.skill-prose pre {
+  background: var(--ink);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  margin: 0 0 1.5em;
+}
+
+.skill-prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #e8e3d8;
+  font-size: 0.85em;
+  line-height: 1.6;
+}
+
+.skill-prose blockquote {
+  border-left: 3px solid var(--accent-line);
+  margin: 0 0 1.2em;
+  padding: 0.5em 0 0.5em 1.25em;
+  color: var(--ink-soft);
+}
+
+.skill-prose a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-line);
+}
+
+.skill-prose a:hover {
+  color: var(--accent-deep);
+}
+
+.skill-prose hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 2em 0;
+}
