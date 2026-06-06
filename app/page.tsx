@@ -70,7 +70,7 @@ export default function Home() {
                   color: 'var(--ink)',
                 }}
               >
-                I&apos;m a product manager building AI-native products. Enjoy building agents and apps in my spare time. Currently at{' '}
+                I&apos;m a product manager building AI-native products for enterprises. Currently at{' '}
                 <a
                   href="https://tennr.com"
                   target="_blank"
