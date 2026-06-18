@@ -94,7 +94,7 @@ export default function Home() {
                   fontSize: 'clamp(18px, 1.8vw, 22px)',
                   lineHeight: 1.55,
                   color: 'var(--ink-soft)',
-                  margin: '0 0 40px',
+                  margin: '0 0 20px',
                 }}
               >
                 Previously spent 5 years as a software engineer at{' '}
@@ -102,6 +102,34 @@ export default function Home() {
                 {' '}and{' '}
                 <a href="https://www.disneyplus.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--rule)' }}>Disney+</a>
                 . Duke and Wharton.
+              </p>
+
+              <p
+                style={{
+                  fontFamily: 'var(--font-jetbrains-mono), ui-monospace, monospace',
+                  fontSize: 13,
+                  lineHeight: 1.6,
+                  color: 'var(--ink-faint)',
+                  margin: '0 0 40px',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '6px 14px',
+                  alignItems: 'baseline',
+                }}
+              >
+                <span>Tennr is a high growth Series C vertical AI startup backed by</span>
+                <a
+                  href="https://fortune.com/2025/06/18/tennr-health-tech-ai-patient-referral-ivp-a16z-lightspeed-iconiq-series-c/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: 'var(--ink-soft)',
+                    textDecoration: 'none',
+                    borderBottom: '1px solid var(--rule)',
+                  }}
+                >
+                  IVP, a16z, Lightspeed, and Iconiq ↗
+                </a>
               </p>
 
               <div
