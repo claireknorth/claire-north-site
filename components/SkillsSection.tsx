@@ -41,6 +41,19 @@ export default function SkillsSection({ skills }: { skills: SkillMeta[] }) {
           >
             Claude skills
           </h2>
+          <p
+            style={{
+              fontFamily: 'var(--font-newsreader), Georgia, serif',
+              fontSize: 'clamp(16px, 1.6vw, 19px)',
+              lineHeight: 1.5,
+              color: 'var(--ink-soft)',
+              margin: 0,
+              maxWidth: '60ch',
+            }}
+          >
+            Click any skill to download the bundle, ask the narrator agent how it
+            works, or read the source.
+          </p>
         </div>
 
         {/* Filter chips */}
