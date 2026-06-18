@@ -1,5 +1,9 @@
 ---
 name: chief-of-staff
+preview: >
+  I use this so nothing falls through. It reads my Slack, email, and meeting
+  notes at end of day, reconciles my task list, and DMs me a recap — then
+  flags what's new and what's due when I start the next morning.
 description: >
   A personal chief of staff — makes sure the user never misses a commitment.
   Evening mode: reads the day's meeting notes, Slack, and email; DMs a recap of

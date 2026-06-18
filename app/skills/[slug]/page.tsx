@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getSkill, getAllSkillSlugs } from '@/lib/skills'
 import Header from '@/components/Header'
+import SkillChat from '@/components/SkillChat'
 
 export async function generateStaticParams() {
   return getAllSkillSlugs().map((slug) => ({ slug }))
@@ -137,11 +138,16 @@ export default async function SkillPage({ params }: { params: { slug: string } }
         </div>
 
         {/* Body */}
-        <div style={{ padding: '56px 0 96px' }}>
+        <div style={{ padding: '56px 0 32px' }}>
           <div
             className="skill-prose"
             dangerouslySetInnerHTML={{ __html: skill.contentHtml }}
           />
+        </div>
+
+        {/* Builder chat */}
+        <div style={{ paddingBottom: 96, maxWidth: 800 }}>
+          <SkillChat slug={skill.slug} name={skill.name} />
         </div>
       </main>
 

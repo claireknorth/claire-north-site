@@ -1,5 +1,9 @@
 ---
 name: deep-understanding
+preview: >
+  I use this when I want to actually understand something instead of just
+  getting an answer. It teaches incrementally, quizzes me as we go, and adapts
+  the depth — ELI5, intern, or expert — until the concept actually sticks.
 description: Use when the user wants to deeply understand a topic, decision, document, codebase, system, strategy, research paper, bug, or agent workflow. Trigger on requests like "teach me", "help me understand", "explain as we go", "ELI5", "ELI14", "explain like an intern", "quiz me", or "make sure I really get this". Also trigger when the user asks to walk through something step by step, wants to learn rather than just get an answer, asks "why does this work", wants to check their understanding, or says things like "I'm confused about" or "can you break this down". Use this skill liberally — any time the goal is genuine comprehension rather than just getting a result.
 ---
 

@@ -121,3 +121,8 @@ body {
   border-top: 1px solid var(--rule);
   margin: 2em 0;
 }
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.9); }
+  50%      { opacity: 1;   transform: scale(1.1); }
+}
