@@ -148,12 +148,7 @@ body {
   border: 1px solid var(--accent);
   padding: 10px 16px;
 }
-.sc-btn--primary:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
 .sc-btn--primary[data-open="true"] {
-  background: var(--ink);
-  border-color: var(--ink);
-}
-.sc-btn--primary[data-open="true"]:hover {
   background: var(--ink);
   border-color: var(--ink);
 }
@@ -162,31 +157,43 @@ body {
   background: transparent;
   border: 1px solid var(--rule);
 }
-.sc-btn--secondary:hover { color: var(--ink); border-color: var(--ink); }
+
+/* Hover effects only on devices that actually hover (skip touch) */
+@media (hover: hover) {
+  .sc-btn--primary:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+  .sc-btn--primary[data-open="true"]:hover {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .sc-btn--secondary:hover { color: var(--ink); border-color: var(--ink); }
+  .sc-starter:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 6%, transparent);
+  }
+}
 
 .sc-starter {
   font-family: var(--font-inter), system-ui, sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   text-align: left;
   color: var(--ink-soft);
   background: transparent;
   border: 1px solid var(--rule);
   border-radius: 999px;
-  padding: 6px 12px;
+  padding: 9px 14px;
   cursor: pointer;
   transition: border-color .15s, color .15s, background .15s;
-}
-.sc-starter:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  /* iOS: prevent gray tap flash */
+  -webkit-tap-highlight-color: transparent;
 }
 .sc-starter:disabled { cursor: default; opacity: 0.6; }
 
 .sc-textarea {
   flex: 1;
   font-family: var(--font-inter), system-ui, sans-serif;
-  font-size: 14.5px;
+  /* 16px+ prevents iOS Safari from auto-zooming on focus */
+  font-size: 16px;
   line-height: 1.45;
   color: var(--ink);
   background: transparent;
@@ -195,7 +202,7 @@ body {
   outline: none;
   resize: none;
   padding: 9px 12px;
-  min-height: 38px;
+  min-height: 40px;
   max-height: 140px;
   transition: border-color .15s;
 }
@@ -222,4 +229,20 @@ body {
   background: transparent;
   border: 1px solid var(--rule);
   cursor: default;
+}
+
+/* Kill gray flash on every tappable thing for iOS / Android */
+button, a, .sc-btn, .sc-starter, .sc-send {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile: tighten padding so content actually fits */
+@media (max-width: 640px) {
+  main, footer > div {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  .skill-prose { font-size: 16px; }
+  .sc-btn { padding: 10px 14px; }
+  .sc-btn--primary { padding: 11px 16px; }
 }
