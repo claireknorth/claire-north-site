@@ -1,10 +1,12 @@
 ---
 name: product-coach
 preview: >
-  I use this to get honest PM coaching — it spots my weak spots against SVPG
-  and industry frameworks, and walks me through tough situations (stakeholder
-  fights, prioritization calls, discovery questions) instead of just letting
-  me vent.
+  Product Coach refines your product skills against the best principles
+  from the frameworks, articles, blogs, and industry veterans worth
+  listening to. It understands the PM job, all the elements that go into
+  doing it well, and remembers what you've worked through across sessions,
+  so you can keep building on past coaching instead of starting from
+  scratch every chat.
 description: >
   Personal product management coach that helps identify and fix weaknesses
   using SVPG and industry-standard frameworks. Use this skill whenever the user

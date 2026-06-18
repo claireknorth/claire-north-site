@@ -5,12 +5,21 @@ import { useEffect, useRef, useState } from 'react'
 type Message = { role: 'user' | 'assistant'; content: string }
 
 const STARTERS = [
-  'How does this skill actually work?',
-  'What tools or services does it touch?',
-  'Why did Claire design it this way?',
+  'How does it work?',
+  'What does it touch?',
+  'Why this design?',
 ]
 
-export default function SkillChat({ slug, name }: { slug: string; name: string }) {
+export default function SkillChat({
+  slug,
+  name,
+  githubUrl,
+}: {
+  slug: string
+  name: string
+  githubUrl: string
+}) {
+  const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -21,6 +30,10 @@ export default function SkillChat({ slug, name }: { slug: string; name: string }
     const el = scrollRef.current
     if (el) el.scrollTop = el.scrollHeight
   }, [messages])
+
+  useEffect(() => {
+    if (open) inputRef.current?.focus()
+  }, [open])
 
   async function send(text: string) {
     const trimmed = text.trim()
@@ -48,11 +61,32 @@ export default function SkillChat({ slug, name }: { slug: string; name: string }
       const reader = res.body.getReader()
       const decoder = new TextDecoder()
       let acc = ''
+      let pending: string | null = null
+      let flushTimer: ReturnType<typeof setTimeout> | null = null
+
+      const flush = () => {
+        if (pending == null) return
+        const next = pending
+        pending = null
+        setMessages([...withUser, { role: 'assistant', content: next }])
+      }
+
       while (true) {
         const { value, done } = await reader.read()
-        if (done) break
+        if (done) {
+          if (flushTimer) clearTimeout(flushTimer)
+          flush()
+          break
+        }
         acc += decoder.decode(value, { stream: true })
-        setMessages([...withUser, { role: 'assistant', content: acc }])
+        pending = acc
+        // Throttle re-renders to ~30fps so the stream stays smooth
+        if (!flushTimer) {
+          flushTimer = setTimeout(() => {
+            flushTimer = null
+            flush()
+          }, 32)
+        }
       }
     } catch {
       setMessages([
@@ -72,177 +106,140 @@ export default function SkillChat({ slug, name }: { slug: string; name: string }
     }
   }
 
+  const canSend = input.trim().length > 0 && !loading
+
   return (
-    <section
-      aria-label={`Ask about the ${name} skill`}
-      style={{
-        marginTop: 64,
-        padding: '40px 32px',
-        border: '1px solid var(--rule)',
-        borderRadius: 12,
-        background: 'color-mix(in srgb, var(--paper) 96%, var(--ink) 4%)',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 6 }}>
-        <span
-          style={{
-            fontFamily: 'var(--font-jetbrains-mono), ui-monospace, monospace',
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            color: 'var(--accent)',
-          }}
+    <>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-controls={`skill-chat-panel-${slug}`}
+          className="sc-btn sc-btn--primary"
+          data-open={open}
         >
-          Ask the builder
-        </span>
+          <ChatIcon />
+          {open ? 'Hide chat' : 'Ask anything about this skill'}
+        </button>
+
+        <a
+          href={`/api/skills/${slug}/download`}
+          download={`${slug}.skill`}
+          className="sc-btn sc-btn--secondary"
+          title="Download as a .skill bundle. Install it in Claude.ai → Skills, or drop it in ~/.claude/skills/ for Claude Code."
+        >
+          <DownloadIcon />
+          Download skill
+        </a>
+
+        <a
+          href={githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="sc-btn sc-btn--secondary"
+        >
+          <GitHubIcon />
+          View on GitHub ↗
+        </a>
       </div>
-      <h2
-        style={{
-          fontFamily: 'var(--font-newsreader), Georgia, serif',
-          fontWeight: 500,
-          fontSize: 'clamp(22px, 2.4vw, 28px)',
-          lineHeight: 1.15,
-          letterSpacing: '-0.015em',
-          margin: '0 0 8px',
-          color: 'var(--ink)',
-        }}
-      >
-        Curious how this was built?
-      </h2>
-      <p
-        style={{
-          fontSize: 15,
-          lineHeight: 1.55,
-          color: 'var(--ink-soft)',
-          margin: '0 0 24px',
-          maxWidth: '60ch',
-        }}
-      >
-        Ask anything about how the {name} skill works, what it touches, or why Claire designed
-        it this way. A narrator agent answers from her builder notes.
-      </p>
 
-      {messages.length === 0 && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 }}>
-          {STARTERS.map((q) => (
-            <button
-              key={q}
-              onClick={() => send(q)}
-              disabled={loading}
-              style={{
-                fontFamily: 'var(--font-inter), system-ui, sans-serif',
-                fontSize: 13,
-                color: 'var(--ink-soft)',
-                background: 'var(--paper)',
-                border: '1px solid var(--rule)',
-                borderRadius: 999,
-                padding: '7px 14px',
-                cursor: loading ? 'default' : 'pointer',
-                transition: 'border-color .15s, color .15s',
-              }}
-              onMouseEnter={(e) => {
-                if (loading) return
-                e.currentTarget.style.borderColor = 'var(--accent)'
-                e.currentTarget.style.color = 'var(--accent)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--rule)'
-                e.currentTarget.style.color = 'var(--ink-soft)'
-              }}
-            >
-              {q}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {messages.length > 0 && (
+      {open && (
         <div
-          ref={scrollRef}
+          id={`skill-chat-panel-${slug}`}
           style={{
-            maxHeight: 480,
-            overflowY: 'auto',
+            marginTop: 20,
+            border: '1px solid var(--rule)',
+            borderRadius: 12,
+            background: 'var(--paper-raised)',
+            overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column',
-            gap: 18,
-            marginBottom: 20,
-            padding: '4px 4px 4px 0',
           }}
         >
-          {messages.map((m, i) => (
-            <MessageBubble key={i} role={m.role} content={m.content} loading={loading && i === messages.length - 1} />
-          ))}
+          {/* Single-line panel header */}
+          <div
+            style={{
+              padding: '12px 16px',
+              borderBottom: '1px solid var(--rule-soft)',
+              fontSize: 13,
+              color: 'var(--ink-soft)',
+              lineHeight: 1.45,
+            }}
+          >
+            Ask anything about <strong style={{ color: 'var(--ink)', fontWeight: 600 }}>{name}</strong>. A narrator agent answers from the source + builder notes.
+          </div>
+
+          {/* Messages */}
+          <div
+            ref={scrollRef}
+            style={{
+              minHeight: 120,
+              maxHeight: 360,
+              overflowY: 'auto',
+              padding: '16px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 14,
+            }}
+          >
+            {messages.length === 0 ? (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {STARTERS.map((q) => (
+                  <button
+                    key={q}
+                    onClick={() => send(q)}
+                    disabled={loading}
+                    className="sc-starter"
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              messages.map((m, i) => (
+                <MessageBubble
+                  key={i}
+                  role={m.role}
+                  content={m.content}
+                  loading={loading && i === messages.length - 1}
+                />
+              ))
+            )}
+          </div>
+
+          {/* Input */}
+          <div
+            style={{
+              display: 'flex',
+              gap: 8,
+              alignItems: 'flex-end',
+              padding: 12,
+              borderTop: '1px solid var(--rule-soft)',
+            }}
+          >
+            <textarea
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={onKeyDown}
+              rows={1}
+              disabled={loading}
+              placeholder="Type a question…"
+              className="sc-textarea"
+            />
+            <button
+              onClick={() => send(input)}
+              disabled={!canSend}
+              aria-label="Send message"
+              className={`sc-send ${canSend ? 'sc-send--active' : 'sc-send--inactive'}`}
+            >
+              {loading ? '…' : '↵'}
+            </button>
+          </div>
         </div>
       )}
-
-      <div
-        style={{
-          display: 'flex',
-          gap: 10,
-          alignItems: 'flex-end',
-          border: '1px solid var(--rule)',
-          borderRadius: 10,
-          padding: 10,
-          background: 'var(--paper)',
-        }}
-      >
-        <textarea
-          ref={inputRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={onKeyDown}
-          rows={1}
-          disabled={loading}
-          placeholder={`Ask about ${name}…`}
-          style={{
-            flex: 1,
-            fontFamily: 'var(--font-inter), system-ui, sans-serif',
-            fontSize: 15,
-            lineHeight: 1.5,
-            color: 'var(--ink)',
-            background: 'transparent',
-            border: 'none',
-            outline: 'none',
-            resize: 'none',
-            padding: '4px 6px',
-            minHeight: 24,
-            maxHeight: 160,
-          }}
-        />
-        <button
-          onClick={() => send(input)}
-          disabled={loading || !input.trim()}
-          style={{
-            fontFamily: 'var(--font-jetbrains-mono), ui-monospace, monospace',
-            fontSize: 12,
-            fontWeight: 500,
-            letterSpacing: '0.04em',
-            textTransform: 'uppercase',
-            color: input.trim() && !loading ? 'var(--paper)' : 'var(--ink-faint)',
-            background: input.trim() && !loading ? 'var(--ink)' : 'transparent',
-            border: `1px solid ${input.trim() && !loading ? 'var(--ink)' : 'var(--rule)'}`,
-            borderRadius: 8,
-            padding: '8px 14px',
-            cursor: loading || !input.trim() ? 'default' : 'pointer',
-            transition: 'all .15s',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {loading ? '…' : 'Ask ↵'}
-        </button>
-      </div>
-      <p
-        style={{
-          fontFamily: 'var(--font-jetbrains-mono), ui-monospace, monospace',
-          fontSize: 11,
-          color: 'var(--ink-faint)',
-          margin: '10px 2px 0',
-        }}
-      >
-        Powered by Claude Haiku 4.5 · Answers grounded in the skill source + Claire&apos;s builder notes
-      </p>
-    </section>
+    </>
   )
 }
 
@@ -262,31 +259,18 @@ function MessageBubble({
         display: 'flex',
         flexDirection: 'column',
         alignItems: isUser ? 'flex-end' : 'flex-start',
-        gap: 4,
       }}
     >
-      <span
-        style={{
-          fontFamily: 'var(--font-jetbrains-mono), ui-monospace, monospace',
-          fontSize: 10.5,
-          fontWeight: 600,
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase',
-          color: 'var(--ink-faint)',
-        }}
-      >
-        {isUser ? 'You' : 'Narrator'}
-      </span>
       <div
         style={{
           maxWidth: '88%',
-          fontSize: 15,
-          lineHeight: 1.6,
+          fontSize: 14.5,
+          lineHeight: 1.55,
           color: isUser ? 'var(--paper)' : 'var(--ink)',
           background: isUser ? 'var(--ink)' : 'var(--paper)',
-          border: isUser ? '1px solid var(--ink)' : '1px solid var(--rule)',
-          borderRadius: 10,
-          padding: '10px 14px',
+          border: isUser ? 'none' : '1px solid var(--rule-soft)',
+          borderRadius: 12,
+          padding: '9px 13px',
           whiteSpace: 'pre-wrap',
           wordBreak: 'break-word',
         }}
@@ -303,12 +287,38 @@ function Pulse() {
       aria-label="Thinking"
       style={{
         display: 'inline-block',
-        width: 8,
-        height: 8,
+        width: 7,
+        height: 7,
         borderRadius: '50%',
         background: 'var(--ink-faint)',
         animation: 'pulse 1.2s ease-in-out infinite',
       }}
     />
+  )
+}
+
+function GitHubIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width={16} height={16} fill="currentColor" aria-hidden>
+      <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+    </svg>
+  )
+}
+
+function DownloadIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" y1="15" x2="12" y2="3" />
+    </svg>
+  )
+}
+
+function ChatIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+    </svg>
   )
 }

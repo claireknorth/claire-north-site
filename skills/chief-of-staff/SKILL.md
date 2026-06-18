@@ -1,9 +1,12 @@
 ---
 name: chief-of-staff
 preview: >
-  I use this so nothing falls through. It reads my Slack, email, and meeting
-  notes at end of day, reconciles my task list, and DMs me a recap — then
-  flags what's new and what's due when I start the next morning.
+  Chief of Staff keeps you on top of your day-to-day work. It scans your
+  Slack and email for follow-ups, things you're tracking, and deadlines,
+  then reconciles all of it against your to-do list and sends you a recap
+  in Slack. It's useful because it's embedded and actually understands how
+  you work. You can schedule recurring invocations. I have mine set up to
+  Slack me every morning and night.
 description: >
   A personal chief of staff — makes sure the user never misses a commitment.
   Evening mode: reads the day's meeting notes, Slack, and email; DMs a recap of
