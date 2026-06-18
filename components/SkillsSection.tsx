@@ -136,7 +136,7 @@ function SkillRow({ skill }: { skill: SkillMeta }) {
             maxWidth: '64ch',
           }}
         >
-          {skill.description}
+          {skill.preview}
         </p>
       </div>
       <span

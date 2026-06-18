@@ -8,12 +8,15 @@ export interface SkillMeta {
   slug: string
   name: string
   description: string
+  preview: string
   category: string
   tags?: string[]
 }
 
 export interface SkillDetail extends SkillMeta {
   contentHtml: string
+  rawMarkdown: string
+  builderNotes: string | null
 }
 
 const skillsDir = path.join(process.cwd(), 'skills')
@@ -36,6 +39,7 @@ export function getAllSkills(): SkillMeta[] {
         slug,
         name: data.name ?? slug,
         description: data.description ?? '',
+        preview: data.preview ?? data.description ?? '',
         category: data.category ?? 'Work',
         tags: data.tags ?? [],
       } as SkillMeta
@@ -53,13 +57,19 @@ export async function getSkill(slug: string): Promise<SkillDetail | null> {
   const processed = await remark().use(remarkHtml).process(content)
   const contentHtml = processed.toString()
 
+  const notesFile = path.join(skillsDir, slug, 'BUILDER_NOTES.md')
+  const builderNotes = fs.existsSync(notesFile) ? fs.readFileSync(notesFile, 'utf8') : null
+
   return {
     slug,
     name: data.name ?? slug,
     description: data.description ?? '',
+    preview: data.preview ?? data.description ?? '',
     category: data.category ?? 'Work',
     tags: data.tags ?? [],
     contentHtml,
+    rawMarkdown: raw,
+    builderNotes,
   }
 }
 
