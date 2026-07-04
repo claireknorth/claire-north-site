@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "title": "Claude Inbox Zero",
+    "oneLineOutcome": "Personal AI email assistant built as a Claude skill — triages my Gmail to inbox zero, drafts replies in my voice (never sends), and hunts the zombie subscriptions I never open. Runs entirely in Claude: no servers, no database, no OAuth app to register.",
+    "url": "https://github.com/claireknorth/claude-inbox-zero",
+    "stack": ["Claude skill", "Gmail MCP", "Scheduled routines"],
+    "linkLabel": "GitHub"
+  }
+]
