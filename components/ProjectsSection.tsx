@@ -7,6 +7,7 @@ interface Project {
   oneLineOutcome: string
   url: string
   stack?: string[]
+  linkLabel?: string
 }
 
 export default function ProjectsSection({ projects }: { projects: Project[] }) {
@@ -42,7 +43,7 @@ export default function ProjectsSection({ projects }: { projects: Project[] }) {
   )
 }
 
-function ProjectRow({ project, isLast }: { project: { title: string; oneLineOutcome: string; url: string; stack?: string[] }; isLast: boolean }) {
+function ProjectRow({ project, isLast }: { project: Project; isLast: boolean }) {
   const [hovered, setHovered] = useState(false)
 
   return (
@@ -121,7 +122,7 @@ function ProjectRow({ project, isLast }: { project: { title: string; oneLineOutc
           transition: 'color .15s',
         }}
       >
-        Demo ↗
+        {project.linkLabel ?? 'Demo'} ↗
       </span>
     </a>
   )
