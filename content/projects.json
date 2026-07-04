@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "title": "Claude Inbox Zero",
+    "oneLineOutcome": "My goal was to build a cheap AI email assistant based off of Inbox Zero. How my agent works: every day it triages my Gmail inbox, labels threads under an InboxZero/ namespace, and drafts replies in my voice for threads that need a response. I added a feedback loop so it continuously improves to sound like me: it studies my sent mail and diffs its drafts against what I actually sent. It also hunts the zombie subscriptions I never open, and ends each day with a digest of what needs me, what got filed, and what to unsubscribe from.",
+    "url": "https://github.com/claireknorth/claude-inbox-zero",
+    "stack": ["Claude skill", "Gmail MCP", "Scheduled routines"],
+    "linkLabel": "GitHub"
+  }
+]
