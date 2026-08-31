@@ -1,5 +1,21 @@
 [
   {
+    "title": "LLM Daily",
+    "oneLineOutcome": "My goal was to learn AI fundamentals in a gamified way, similar to Duolingo, so it actually felt fun. How I built it: I used Fable 5 and Grok 4.6 in Cursor to write 27 lessons covering LLMs, how models get trained, RAG, evals, agents, and how to think about AI as a PM. I fed in YouTube videos from Andrej Karpathy and others as source material, and made sure every concept was broken down into an analogy, a real example, and a quiz.",
+    "url": "https://claireknorth.github.io/llm-daily/",
+    "githubUrl": "https://github.com/claireknorth/llm-daily",
+    "stack": ["React", "PWA", "Spaced repetition"],
+    "linkLabel": "Demo",
+    "screenshots": [
+      { "src": "/projects/llm-daily/home.png", "alt": "Home screen with streak, daily XP goal, and next lesson" },
+      { "src": "/projects/llm-daily/lesson.png", "alt": "A lesson card explaining RAG with an analogy and example" },
+      { "src": "/projects/llm-daily/quiz.png", "alt": "Quiz question with instant feedback" },
+      { "src": "/projects/llm-daily/learn.png", "alt": "The six-unit learning path" },
+      { "src": "/projects/llm-daily/review.png", "alt": "Spaced-repetition flashcard review" },
+      { "src": "/projects/llm-daily/stats.png", "alt": "Progress stats and weekly activity chart" }
+    ]
+  },
+  {
     "title": "Claude Inbox Zero",
     "oneLineOutcome": "My goal was to build a cheap AI email assistant based off of Inbox Zero. How my agent works: every day it triages my Gmail inbox, labels threads under an InboxZero/ namespace, and drafts replies in my voice for threads that need a response. I added a feedback loop so it continuously improves to sound like me: it studies my sent mail and diffs its drafts against what I actually sent. It also hunts the zombie subscriptions I never open, and ends each day with a digest of what needs me, what got filed, and what to unsubscribe from.",
     "url": "https://github.com/claireknorth/claude-inbox-zero",

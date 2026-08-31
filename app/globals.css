@@ -242,6 +242,7 @@ button, a, .sc-btn, .sc-starter, .sc-send {
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
+  .projects-wrap { padding-left: 20px !important; padding-right: 20px !important; }
   .skill-prose { font-size: 16px; }
   .sc-btn { padding: 10px 14px; }
   .sc-btn--primary { padding: 11px 16px; }
