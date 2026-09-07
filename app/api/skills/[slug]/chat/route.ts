@@ -1,11 +1,11 @@
 import type { NextRequest } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
 import { getSkill } from '@/lib/skills'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-const client = new Anthropic()
+const OPENROUTER_CHAT_URL = 'https://openrouter.ai/api/v1/chat/completions'
+const DEFAULT_OPENROUTER_MODEL = 'openrouter/auto'
 
 const RATE_LIMIT = 8
 const WINDOW_MS = 60_000
@@ -24,6 +24,23 @@ function rateLimited(ip: string): boolean {
 }
 
 type ChatMessage = { role: 'user' | 'assistant'; content: string }
+type OpenRouterChunk = {
+  choices?: Array<{ delta?: { content?: string | null } }>
+  error?: { message?: string }
+}
+
+function getOpenRouterHeaders(req: NextRequest, apiKey: string) {
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${apiKey}`,
+    'Content-Type': 'application/json',
+    'X-Title': process.env.OPENROUTER_APP_NAME ?? 'Claire North Portfolio',
+  }
+
+  const referer = process.env.OPENROUTER_SITE_URL ?? req.nextUrl.origin
+  if (referer) headers['HTTP-Referer'] = referer
+
+  return headers
+}
 
 export async function POST(
   req: NextRequest,
@@ -47,6 +64,11 @@ export async function POST(
 
   if (!messages.length) return new Response('No messages', { status: 400 })
   const trimmed = messages.slice(-12)
+  const apiKey = process.env.OPENROUTER_API_KEY
+
+  if (!apiKey) {
+    return new Response('OPENROUTER_API_KEY is not configured', { status: 500 })
+  }
 
   const systemText = `You are a narrator helping visitors of Claire North's portfolio understand the "${skill.name}" Claude skill she built. You are NOT roleplaying as the skill itself — you are talking ABOUT it, in the third person.
 
@@ -62,29 +84,63 @@ ${skill.rawMarkdown}
 === BUILDER NOTES (Claire's own notes on how and why she built this) ===
 ${skill.builderNotes ?? '(Claire has not written builder notes for this skill yet — answer only from the SKILL.md above.)'}`
 
-  const stream = client.messages.stream({
-    model: 'claude-haiku-4-5',
-    max_tokens: 1024,
-    system: [
-      {
-        type: 'text',
-        text: systemText,
-        cache_control: { type: 'ephemeral' },
-      },
-    ],
-    messages: trimmed.map((m) => ({ role: m.role, content: m.content })),
-  })
-
   const encoder = new TextEncoder()
   const readable = new ReadableStream<Uint8Array>({
     async start(controller) {
       try {
-        for await (const event of stream) {
-          if (
-            event.type === 'content_block_delta' &&
-            event.delta.type === 'text_delta'
-          ) {
-            controller.enqueue(encoder.encode(event.delta.text))
+        const openRouterRes = await fetch(OPENROUTER_CHAT_URL, {
+          method: 'POST',
+          headers: getOpenRouterHeaders(req, apiKey),
+          body: JSON.stringify({
+            model: process.env.OPENROUTER_MODEL ?? DEFAULT_OPENROUTER_MODEL,
+            max_tokens: 1024,
+            stream: true,
+            plugins: [
+              {
+                id: 'auto-router',
+                cost_quality_tradeoff: 10,
+              },
+            ],
+            messages: [
+              { role: 'system', content: systemText },
+              ...trimmed.map((m) => ({ role: m.role, content: m.content })),
+            ],
+          }),
+        })
+
+        if (!openRouterRes.ok) {
+          const text = await openRouterRes.text().catch(() => '')
+          throw new Error(
+            `OpenRouter ${openRouterRes.status}: ${text.slice(0, 240) || openRouterRes.statusText}`,
+          )
+        }
+
+        if (!openRouterRes.body) throw new Error('OpenRouter returned no stream')
+
+        const reader = openRouterRes.body.getReader()
+        const decoder = new TextDecoder()
+        let buffer = ''
+
+        while (true) {
+          const { value, done } = await reader.read()
+          if (done) break
+
+          buffer += decoder.decode(value, { stream: true })
+          const lines = buffer.split('\n')
+          buffer = lines.pop() ?? ''
+
+          for (const line of lines) {
+            const trimmedLine = line.trim()
+            if (!trimmedLine.startsWith('data:')) continue
+
+            const data = trimmedLine.slice(5).trim()
+            if (!data || data === '[DONE]') continue
+
+            const parsed = JSON.parse(data) as OpenRouterChunk
+            if (parsed.error?.message) throw new Error(parsed.error.message)
+
+            const text = parsed.choices?.[0]?.delta?.content
+            if (text) controller.enqueue(encoder.encode(text))
           }
         }
       } catch (err) {
