@@ -1,9 +1,9 @@
 [
   {
-    "title": "Hermes Marathon Coach",
-    "oneLineOutcome": "My goal was to turn a marathon training plan into a useful daily AI coach, not just a chatbot. I packaged it as a Hermes Agent skill with a nightly cron workflow, persistent Markdown memory, Strava and Google Calendar data, Open-Meteo weather, token refresh scripts, and pace-at-heart-rate trend tracking. It reads what actually happened, compares it to the plan, remembers preferences and injury constraints, and sends a concise Telegram prep message with what to do next.",
+    "title": "AI Marathon Coach",
+    "oneLineOutcome": "An always-on training agent that turns a marathon plan into a useful daily coach, not just a chatbot. It reads Strava, calendar, weather, and persistent memory, compares what actually happened to the plan, remembers preferences and injury constraints, then sends a concise Telegram prep message with what to do next.",
     "url": "#projects",
-    "stack": ["Hermes Agent", "Cron workflow", "Strava API", "Google Calendar", "Persistent memory"],
+    "stack": ["Hermes Agent", "Cron workflow", "Strava MCP", "Google Calendar", "Persistent memory"],
     "demoKind": "marathonCoach",
     "screenshots": [
       { "src": "/projects/marathon-coach/visual-demo.png", "alt": "Animated preview of the marathon coach data flow and Telegram brief" }
