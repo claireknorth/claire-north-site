@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { getAllSkills } from '@/lib/skills'
 import Header from '@/components/Header'
 import SkillsSection from '@/components/SkillsSection'
@@ -58,6 +59,29 @@ export default function Home() {
               >
                 Hi, I&apos;m Claire.
               </h1>
+
+              <div
+                style={{
+                  width: 178,
+                  margin: '-18px 0 34px',
+                }}
+              >
+                <Image
+                  src="/claire-headshot.jpg"
+                  alt="Claire North"
+                  width={804}
+                  height={976}
+                  priority
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    height: 'auto',
+                    borderRadius: 8,
+                    border: '1px solid var(--rule)',
+                    boxShadow: '0 16px 36px color-mix(in srgb, var(--ink) 12%, transparent)',
+                  }}
+                />
+              </div>
 
               <p
                 style={{

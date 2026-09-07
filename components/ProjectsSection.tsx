@@ -14,6 +14,7 @@ interface Project {
   githubUrl?: string
   stack?: string[]
   linkLabel?: string
+  demoKind?: string
   screenshots?: Screenshot[]
 }
 
@@ -92,20 +93,25 @@ function FeaturedProject({ project, isLast }: { project: Project; isLast: boolea
           maxWidth: '68ch',
         }}
       >
-        {project.oneLineOutcome} Check it out!! Here&apos;s a{' '}
-        <a
-          href={project.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            color: 'var(--accent)',
-            textDecoration: 'none',
-            borderBottom: '1px solid color-mix(in srgb, var(--accent) 35%, transparent)',
-          }}
-        >
-          demo
-        </a>
-        .
+        {project.oneLineOutcome}
+        {project.demoKind !== 'marathonCoach' && (
+          <>
+            {' '}Check it out!! Here&apos;s a{' '}
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: 'var(--accent)',
+                textDecoration: 'none',
+                borderBottom: '1px solid color-mix(in srgb, var(--accent) 35%, transparent)',
+              }}
+            >
+              demo
+            </a>
+            .
+          </>
+        )}
       </p>
       {project.stack && project.stack.length > 0 && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 14 }}>
@@ -127,7 +133,7 @@ function FeaturedProject({ project, isLast }: { project: Project; isLast: boolea
           ))}
         </div>
       )}
-      {project.githubUrl && (
+      {project.githubUrl && project.demoKind !== 'marathonCoach' && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginTop: 16 }}>
           <a
             href={project.githubUrl}
@@ -146,44 +152,109 @@ function FeaturedProject({ project, isLast }: { project: Project; isLast: boolea
         </div>
       )}
 
-      <div
-        style={{
-          display: 'flex',
-          gap: 14,
-          overflowX: 'auto',
-          marginTop: 22,
-          padding: '4px 0 12px',
-          WebkitOverflowScrolling: 'touch',
-        }}
-      >
-        {project.screenshots!.map((shot) => (
-          <figure
-            key={shot.src}
-            style={{
-              margin: 0,
-              flex: '0 0 168px',
-              background: '#12101f',
-              borderRadius: 22,
-              padding: 6,
-              boxShadow: '0 10px 28px color-mix(in srgb, #12101f 18%, transparent)',
-            }}
-          >
-            <img
-              src={shot.src}
-              alt={shot.alt}
-              width={390}
-              height={780}
+      {project.demoKind === 'marathonCoach' ? (
+        <MarathonCoachDemo />
+      ) : (
+        <div
+          style={{
+            display: 'flex',
+            gap: 14,
+            overflowX: 'auto',
+            marginTop: 22,
+            padding: '4px 0 12px',
+            WebkitOverflowScrolling: 'touch',
+          }}
+        >
+          {project.screenshots!.map((shot) => (
+            <figure
+              key={shot.src}
               style={{
-                display: 'block',
-                width: '100%',
-                height: 'auto',
-                borderRadius: 16,
+                margin: 0,
+                flex: '0 0 168px',
+                background: '#12101f',
+                borderRadius: 22,
+                padding: 6,
+                boxShadow: '0 10px 28px color-mix(in srgb, #12101f 18%, transparent)',
               }}
-            />
-          </figure>
+            >
+              <img
+                src={shot.src}
+                alt={shot.alt}
+                width={390}
+                height={780}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: 16,
+                }}
+              />
+            </figure>
+          ))}
+        </div>
+      )}
+    </article>
+  )
+}
+
+function MarathonCoachDemo() {
+  const signals = [
+    { label: 'Strava', value: '6.2 mi easy run', tone: 'green' },
+    { label: 'Calendar', value: 'Week 12 long run', tone: 'amber' },
+    { label: 'Weather', value: 'dew point 63F', tone: 'blue' },
+    { label: 'Memory', value: 'HR drift watch', tone: 'rose' },
+  ]
+
+  return (
+    <div className="coach-demo" aria-label="Animated Marathon Coach workflow preview">
+      <div className="coach-orbit" aria-hidden="true">
+        {signals.map((signal, index) => (
+          <div
+            className={`coach-signal coach-signal--${signal.tone}`}
+            style={{ ['--delay' as string]: `${index * 0.45}s` }}
+            key={signal.label}
+          >
+            <span>{signal.label}</span>
+            <strong>{signal.value}</strong>
+          </div>
         ))}
       </div>
-    </article>
+
+      <div className="coach-phone" aria-hidden="true">
+        <div className="coach-phone__top">
+          <span>Hermes</span>
+          <span>9:00 PM</span>
+        </div>
+        <div className="coach-card">
+          <div className="coach-card__kicker">NIGHTLY PREP</div>
+          <h4>Tomorrow: 10 mi aerobic</h4>
+          <p className="coach-card__weather">63F dew point. Best window: 7:15-9:00 AM.</p>
+          <div className="coach-metrics">
+            <span><b>HR cap</b> 155</span>
+            <span><b>Pace</b> by effort</span>
+            <span><b>Fuel</b> 2 gels</span>
+          </div>
+          <div className="coach-note">
+            Keep the first two miles deliberately boring. If HR climbs, slow down before the workout becomes a race.
+          </div>
+        </div>
+      </div>
+
+      <div className="coach-memory" aria-hidden="true">
+        <div className="coach-memory__line">
+          <span>read memory</span>
+          <i />
+          <span>compare run</span>
+          <i />
+          <span>write state</span>
+        </div>
+        <div className="coach-memory__rows">
+          <span>pace-at-HR table updated</span>
+          <span>effort discipline flagged</span>
+          <span>next-day plan delivered</span>
+        </div>
+      </div>
+    </div>
   )
 }
 

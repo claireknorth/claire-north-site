@@ -1,5 +1,15 @@
 [
   {
+    "title": "Hermes Marathon Coach",
+    "oneLineOutcome": "My goal was to turn a marathon training plan into a useful daily AI coach, not just a chatbot. I packaged it as a Hermes Agent skill with a nightly cron workflow, persistent Markdown memory, Strava and Google Calendar data, Open-Meteo weather, token refresh scripts, and pace-at-heart-rate trend tracking. It reads what actually happened, compares it to the plan, remembers preferences and injury constraints, and sends a concise Telegram prep message with what to do next.",
+    "url": "#projects",
+    "stack": ["Hermes Agent", "Cron workflow", "Strava API", "Google Calendar", "Persistent memory"],
+    "demoKind": "marathonCoach",
+    "screenshots": [
+      { "src": "/projects/marathon-coach/visual-demo.png", "alt": "Animated preview of the marathon coach data flow and Telegram brief" }
+    ]
+  },
+  {
     "title": "LLM Daily",
     "oneLineOutcome": "My goal was to learn AI fundamentals in a gamified way, similar to Duolingo, so it actually felt fun. How I built it: I used Fable 5 and Grok 4.6 in Cursor to write 27 lessons covering LLMs, how models get trained, RAG, evals, agents, and how to think about AI as a PM. I fed in YouTube videos from Andrej Karpathy and others as source material, and made sure every concept was broken down into an analogy, a real example, and a quiz.",
     "url": "https://claireknorth.github.io/llm-daily/",
